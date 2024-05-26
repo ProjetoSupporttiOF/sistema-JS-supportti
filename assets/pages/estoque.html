@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CONTROLE SUPPORT TI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/moblie.css">
+    <link rel="stylesheet" href="/assets/css/adicionar.css">
+    
+    <style>
+        .card-title {
+            font-size: 15px;
+        }
+
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            margin-bottom: 20px;
+            padding: 10px;
+            margin-left: 50px;
+            /* Adiciona margem extra à esquerda */
+            margin-right: 50px;
+            /* Adiciona margem extra à direita */
+        }
+
+        .scroll-item {
+            flex: 0 0 auto;
+            width: 250px;
+            /* Ajuste o tamanho conforme necessário */
+            margin-right: 10px;
+        }
+
+        .arrow {
+            cursor: pointer;
+            font-size: 1.5em;
+            user-select: none;
+
+        }
+
+        .arrow-left {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            left: 10px;
+            /* Ajusta a posição para a margem esquerda */
+        }
+
+        .arrow-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            right: 10px;
+            /* Ajusta a posição para a margem direita */
+        }
+
+
+        .arrow-left {
+            left: 0;
+        }
+
+        .arrow-right {
+            right: 0;
+        }
+
+        .table-container {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .hidden {
+            display: none;
+        }
+        .positiondados {
+    overflow-y: auto; /* Permite o scroll dentro da div */
+    max-height: calc(100vh - 150px); /* Defina a altura máxima conforme necessário */
+}
+.title-table{
+    font-size: 300px;
+}
+        
+    </style>
+</head>
+
+<body>
+    <section class="container-custom">
+        <section class="cabecalho">
+
+
+
+            <div class="mt-5"></div>
+            <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center">
+                <p class="text-header">Estoque</p>
+               
+            </div>
+            <hr class="line">
+        </section>
+        <!-- Modal -->
+      
+        </div>
+        </div>
+    </section>
+<section class="">
+    <div class="positiondados">
+
+        <div class=" my-5">
+            <div id="dados-container"></div>
+        </div>
+    </div>
+</section>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/diacritics/1.4.0/diacritics.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script>
+         const dadosDiv = document.querySelector('#dados-container');
+    let currentItemToDeleteId; // Variável para armazenar o ID do item a ser excluído
+    let confirmationModal; // Variável para armazenar a instância do modal
+
+    // Função para ocultar um item da UI
+    function hideItemFromUI(itemId) {
+        // Encontra o elemento da tabela que representa o item a ser removido
+        const itemElements = document.querySelectorAll(`[data-item-id="${itemId}"]`);
+        itemElements.forEach(itemElement => {
+            // Altera a propriedade display para 'none' para ocultar o item
+            itemElement.style.display = 'none';
+        });
+    }
+
+    function formatarTitulo(titulo) {
+    return titulo.charAt(0).toUpperCase() + titulo.slice(1).toLowerCase().replaceAll('_', ' ');
+}
+
+
+function exibirDadosPorColuna(dadosPorTabela) {
+    console.log('Dados recebidos:', dadosPorTabela);
+
+    if (dadosPorTabela && typeof dadosPorTabela === 'object') {
+        Object.keys(dadosPorTabela).forEach(tabela => {
+            const tituloFormatado = formatarTitulo(tabela); // Formatar o título da tabela
+            const dadosDaTabela = dadosPorTabela[tabela];
+
+            if (Array.isArray(dadosDaTabela) && dadosDaTabela.length > 0) {
+                const heading = document.createElement('h2');
+                heading.style.paddingLeft = '60px';
+                heading.textContent = tituloFormatado; // Usar o título formatado
+                dadosDiv.appendChild(heading);
+
+                // Restante do seu código...
+
+
+                        const tableContainer = document.createElement('div');
+                        tableContainer.classList.add('table-container');
+
+                        const arrowLeft = document.createElement('div');
+                        arrowLeft.classList.add('arrow', 'arrow-left');
+                        arrowLeft.innerHTML = '&#9664;';
+
+                        const arrowRight = document.createElement('div');
+                        arrowRight.classList.add('arrow', 'arrow-right');
+                        arrowRight.innerHTML = '&#9654;';
+
+                        const scrollContainer = document.createElement('div');
+                        scrollContainer.classList.add('scroll-container');
+
+                        dadosDaTabela.forEach(item => {
+                            const colDiv = document.createElement('div');
+                            colDiv.classList.add('scroll-item');
+
+                            const cardDiv = document.createElement('div');
+                            cardDiv.classList.add('card', 'h-100');
+                            cardDiv.style.padding = '10px'; // Adiciona margem interna de 10px
+
+                            // Adiciona a imagem ao card
+                            const img = document.createElement('img');
+                            img.classList.add('card-img-top');
+                            img.src = item.imagem || 'https://cdn.jsdelivr.net/gh/fgundesr1/projetoscomgit@main/img.png';
+                            img.alt = 'Imagem do Card';
+                            cardDiv.appendChild(img);
+
+                            const cardBody = document.createElement('div');
+                            cardBody.classList.add('card-body');
+
+                            // Adiciona o título ao card
+                            const cardTitle = document.createElement('h5');
+                            cardTitle.classList.add('card-title');
+                            cardTitle.textContent = item.nome || 'Nome do produto'; // Use o nome do item ou um nome padrão
+                            cardTitle.style.marginTop = '10px'; // Adiciona espaço de 10 pixels acima do elemento
+                            cardTitle.style.marginBottom = '40px'; // Adiciona espaço de 10 pixels abaixo do elemento
+                            cardBody.appendChild(cardTitle);
+
+                            // Botões de editar e excluir
+                            const btnEditar = document.createElement('button');
+                            btnEditar.classList.add('btn', 'btn-primary', 'me-1');
+                            btnEditar.innerHTML = `
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0.706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1.707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1.5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        </svg>
+                                    `;
+                            btnEditar.addEventListener('click', function () {
+                                // Código para exibir o modal de edição
+                            });
+
+                            const btnExcluir = document.createElement('button');
+                            btnExcluir.classList.add('btn', 'btn-danger');
+                            btnExcluir.innerHTML = `
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1.708-.708L8 7.293l5.146-5.147a.5.5 0 0 1.708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                    `;
+                            btnExcluir.addEventListener('click', function () {
+                                currentItemToDeleteId = item.id; // Atualiza o ID do item a ser excluído
+                                const modal = document.createElement('div');
+                                modal.classList.add('modal', 'fade');
+                                modal.setAttribute('id', 'confirmationModal');
+                                modal.setAttribute('data-bs-backdrop', 'static');
+                                modal.setAttribute('data-bs-keyboard', 'false');
+                                modal.setAttribute('tabindex', '-1');
+                                modal.setAttribute('aria-labelledby', 'confirmationModalLabel');
+                                modal.setAttribute('aria-hidden', 'true');
+
+                                const modalDialog = document.createElement('div');
+                                modalDialog.classList.add('modal-dialog', 'modal-dialog-centered');
+
+                                const modalContent = document.createElement('div');
+                                modalContent.classList.add('modal-content');
+
+                                const modalHeader = document.createElement('div');
+                                modalHeader.classList.add('modal-header');
+
+                                const modalTitle = document.createElement('h1');
+                                modalTitle.classList.add('modal-title', 'fs-5');
+
+                                modalTitle.setAttribute('id', 'confirmationModalLabel');
+                                modalTitle.textContent = 'Confirmação de Exclusão';
+
+                                const modalCloseButton = document.createElement('button');
+                                modalCloseButton.setAttribute('type', 'button');
+                                modalCloseButton.classList.add('btn-close');
+                                modalCloseButton.setAttribute('data-bs-dismiss', 'modal');
+                                modalCloseButton.setAttribute('aria-label', 'Close');
+
+                                modalHeader.appendChild(modalTitle);
+                                modalHeader.appendChild(modalCloseButton);
+
+                                const modalBody = document.createElement('div');
+                                modalBody.classList.add('modal-body');
+                                modalBody.textContent = 'Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.';
+
+                                const modalFooter = document.createElement('div');
+                                modalFooter.classList.add('modal-footer');
+
+                                const closeButton = document.createElement('button');
+                                closeButton.setAttribute('type', 'button');
+                                closeButton.classList.add('btn', 'btn-secondary');
+                                closeButton.setAttribute('data-bs-dismiss', 'modal');
+                                closeButton.textContent = 'Cancelar';
+
+                                const confirmButton = document.createElement('button');
+                                confirmButton.setAttribute('type', 'button');
+                                confirmButton.classList.add('btn', 'btn-danger');
+                                confirmButton.textContent = 'Excluir';
+
+                                let items = [];
+                                confirmButton.addEventListener('click', function () {
+                                    const itemId = currentItemToDeleteId;
+                                    const url = `/excluirItem/${tabela}/${itemId}`;
+
+                                    fetch(url, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                    })
+                                        .then(response => {
+                                            if (response.ok) {
+                                                // Oculta o item na interface do usuário
+                                                hideItemFromUI(itemId);
+                                                console.log('Item excluído com sucesso!');
+                                            } else {
+                                                console.error('Erro ao excluir o item:', response.status);
+                                            }
+                                        })
+                                        .catch(error => console.error('Erro ao excluir o item:', error))
+                                        .finally(() => {
+                                            // Fecha o modal após excluir o item
+                                            confirmationModal.hide();
+                                        });
+                                });
+
+                                function hideItemFromUI(itemId) {
+                                    // Encontra o elemento da tabela que representa o item a ser removido
+                                    const itemElement = document.querySelector(`[data-item-id="${itemId}"]`);
+                                    if (itemElement) {
+                                        // Remove o elemento da tabela
+                                        itemElement.remove();
+                                    }
+                                }
+
+                                modalFooter.appendChild(closeButton);
+                                modalFooter.appendChild(confirmButton);
+
+                                modalContent.appendChild(modalHeader);
+                                modalContent.appendChild(modalBody);
+                                modalContent.appendChild(modalFooter);
+
+                                modalDialog.appendChild(modalContent);
+
+                                modal.appendChild(modalDialog);
+
+                                document.body.appendChild(modal);
+
+                                confirmationModal = new bootstrap.Modal(modal, {});
+                                confirmationModal.show();
+                            });
+
+                            const btnGroup = document.createElement('div');
+                            btnGroup.classList.add('mt-2');
+                            btnGroup.appendChild(btnEditar);
+                            btnGroup.appendChild(btnExcluir);
+
+                            cardBody.appendChild(btnGroup);
+                            cardDiv.appendChild(cardBody);
+                            colDiv.appendChild(cardDiv);
+                            scrollContainer.appendChild(colDiv);
+                        });
+
+                        arrowLeft.addEventListener('click', function () {
+                            scrollContainer.scrollBy({ left: -300, behavior: 'smooth' });
+                        });
+
+                        arrowRight.addEventListener('click', function () {
+                            scrollContainer.scrollBy({ left: 300, behavior: 'smooth' });
+                        });
+
+                        tableContainer.appendChild(arrowLeft);
+                        tableContainer.appendChild(scrollContainer);
+                        tableContainer.appendChild(arrowRight);
+                        dadosDiv.appendChild(tableContainer);
+
+                        // Verifica se as setas de rolagem são necessárias
+                        verificarSetasDeRolagem();
+
+                    } else {
+                        console.error('A tabela', tabela, 'não possui dados.');
+                    }
+                });
+            } else {
+                console.error('Dados inválidos recebidos:', dadosPorTabela);
+            }
+        }
+
+        function verificarSetasDeRolagem() {
+            const contenedorRolagem = document.querySelector('.scroll-container');
+            const larguraContenedor = contenedorRolagem.offsetWidth;
+            const larguraRolagem = contenedorRolagem.scrollWidth;
+
+            if (larguraRolagem > larguraContenedor) {
+                document.querySelector('.arrow-left').style.display = 'block';
+                document.querySelector('.arrow-right').style.display = 'block';
+            } else {
+                document.querySelector('.arrow-left').style.display = 'none';
+                document.querySelector('.arrow-right').style.display = 'none';
+            }
+        }
+
+        fetch('/dadosTabela')
+      .then(response => response.json())
+      .then(data => {
+            console.log('Dados recebidos:', data);
+            exibirDadosPorColuna(data);
+        })
+      .catch(error => console.error('Erro ao obter dados das tabelas:', error));
+
+    document.getElementById('confirmationModal').addEventListener('hidden.bs.modal', function () {
+        currentItemToDeleteId = null;
+        document.getElementById('confirmationModal').remove(); // Remove o modal do DOM quando fechado
+    });
+
+    </script>
+
+
+
+
+
+
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exibição Horizontal de Itens</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            margin-bottom: 20px;
+        }
+
+        .scroll-item {
+            flex: 0 0 auto;
+            width: 300px; /* Ajuste o tamanho conforme necessário */
+            margin-right: 10px;
+        }
+
+        .arrow {
+            cursor: pointer;
+            font-size: 2em;
+            user-select: none;
+        }
+
+        .arrow-left, .arrow-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .arrow-left {
+            left: 0;
+        }
+
+        .arrow-right {
+            right: 0;
+        }
+
+        .table-container {
+            position: relative;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+<div class="container my-5" id="dados-container">
+</div>
+
+<script>
+    const dadosDiv = document.querySelector('#dados-container');
+    let currentItemToDeleteId; // Variável para armazenar o ID do item a ser excluído
+    let confirmationModal; // Variável para armazenar a instância do modal
+
+    function exibirDadosPorColuna(dadosPorTabela) {
+        console.log('Dados recebidos:', dadosPorTabela);
+
+        if (dadosPorTabela && typeof dadosPorTabela === 'object') {
+            Object.keys(dadosPorTabela).forEach(tabela => {
+                const dadosDaTabela = dadosPorTabela[tabela];
+
+                if (Array.isArray(dadosDaTabela) && dadosDaTabela.length > 0) {
+                    const heading = document.createElement('h2');
+                    heading.textContent = tabela;
+                    dadosDiv.appendChild(heading);
+
+                    const tableContainer = document.createElement('div');
+                    tableContainer.classList.add('table-container');
+
+                    const arrowLeft = document.createElement('div');
+                    arrowLeft.classList.add('arrow', 'arrow-left');
+                    arrowLeft.innerHTML = '&#9664;';
+
+                    const arrowRight = document.createElement('div');
+                    arrowRight.classList.add('arrow', 'arrow-right');
+                    arrowRight.innerHTML = '&#9654;';
+
+                    const scrollContainer = document.createElement('div');
+                    scrollContainer.classList.add('scroll-container');
+
+                    dadosDaTabela.forEach(item => {
+                        const colDiv = document.createElement('div');
+                        colDiv.classList.add('scroll-item');
+
+                        const cardDiv = document.createElement('div');
+                        cardDiv.classList.add('card', 'h-100');
+
+                        const cardBody = document.createElement('div');
+                        cardBody.classList.add('card-body');
+
+                        Object.keys(item).forEach(key => {
+                            if (key !== 'id') {
+                                const itemDetailDiv = document.createElement('div');
+                                itemDetailDiv.classList.add('mb-2');
+
+                                const keySpan = document.createElement('span');
+                                keySpan.classList.add('fw-bold');
+                                keySpan.textContent = key + ': ';
+
+                                const valueSpan = document.createElement('span');
+                                valueSpan.textContent = item[key] !== null && item[key] !== undefined ? item[key] : '';
+
+                                itemDetailDiv.appendChild(keySpan);
+                                itemDetailDiv.appendChild(valueSpan);
+                                cardBody.appendChild(itemDetailDiv);
+                            }
+                        });
+
+                        const btnEditar = document.createElement('button');
+                        btnEditar.classList.add('btn', 'btn-primary', 'me-1');
+                        btnEditar.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                            </svg>
+                        `;
+                        btnEditar.addEventListener('click', function () {
+                            // Código para exibir o modal de edição
+                        });
+
+                        const btnExcluir = document.createElement('button');
+                        btnExcluir.classList.add('btn', 'btn-danger');
+                        btnExcluir.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                            </svg>
+                        `;
+                        btnExcluir.addEventListener('click', function () {
+                            // Código para exibir o modal de confirmação de exclusão
+                        });
+
+                        const btnGroup = document.createElement('div');
+                        btnGroup.classList.add('mt-2');
+                        btnGroup.appendChild(btnEditar);
+                        btnGroup.appendChild(btnExcluir);
+
+                        cardBody.appendChild(btnGroup);
+                        cardDiv.appendChild(cardBody);
+                        colDiv.appendChild(cardDiv);
+                        scrollContainer.appendChild(colDiv);
+                    });
+
+                    arrowLeft.addEventListener('click', function () {
+                        scrollContainer.scrollBy({ left: -300, behavior: 'smooth' });
+                    });
+
+                    arrowRight.addEventListener('click', function () {
+                        scrollContainer.scrollBy({ left: 300, behavior: 'smooth' });
+                    });
+
+                    tableContainer.appendChild(arrowLeft);
+                    tableContainer.appendChild(scrollContainer);
+                    tableContainer.appendChild(arrowRight);
+                    dadosDiv.appendChild(tableContainer);
+
+                } else {
+                    console.error('A tabela', tabela, 'não possui dados.');
+                }
+            });
+        } else {
+            console.error('Dados inválidos recebidos:', dadosPorTabela);
+        }
+    }
+
+    fetch('/dadosTabela')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Dados recebidos:', data);
+            exibirDadosPorColuna(data);
+        })
+        .catch(error => console.error('Erro ao obter dados das tabelas:', error));
+
+    document.getElementById('confirmationModal').addEventListener('hidden.bs.modal', function () {
+        currentItemToDeleteId = null;
+    });
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+ -->

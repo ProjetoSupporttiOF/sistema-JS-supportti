@@ -1,0 +1,46 @@
+@media (max-width: 767.98px) {
+    .d-flex.flex-column.flex-md-row {
+      
+        margin-left: -110px; /* Remove qualquer margem à esquerda */
+     
+    }
+.text-header {
+    margin-left: -185px; /* Remove qualquer margem à esquerda */
+    margin-bottom: -0.5px;
+}
+.line{
+    margin-top: 2px;
+}
+.buttonmenu{
+    height: 38px;
+    background-color: #2dcdaa;
+    width: 70px;
+    position: fixed;
+    margin-top: 28px;
+    z-index: 9999;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.dadosmobile{
+   
+    margin: 0 auto;
+    padding: 13px;
+}
+.spacetitle{
+    height: 4vh;
+}
+.modalmobile{
+    width: 100%; 
+    margin: 0 auto;
+  }
+
+
+  #main-content {
+    transition: margin-left 0.7s ease;
+    /* Suaviza a transição */
+    position: relative;
+    /* Ajuste conforme necessário */
+    z-index: 1;
+    /* Garante que o conteúdo principal fique abaixo do menu */
+}
+}

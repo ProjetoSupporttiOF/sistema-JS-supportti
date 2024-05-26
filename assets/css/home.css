@@ -1,0 +1,50 @@
+body {
+    overflow: hidden;
+    /* Desabilita o scroll do corpo */
+   background-color: #eff3f5;
+}
+
+.cabecalho {
+    height: auto;
+    /* Ajusta a altura automaticamente conforme o conteúdo */
+}
+
+/* Ocultar a barra de rolagem */
+::-webkit-scrollbar {
+    display: none;
+    /* Para navegadores baseados em WebKit, como Chrome/Safari */
+}
+
+/* O mesmo para navegadores Firefox */
+/* Nota: Algumas versões do Firefox podem exigir prefixos de fornecedor adicionais */
+* {
+    scrollbar-width: none;
+}
+.dados {
+    overflow-y: scroll;
+    /* Habilita o scroll apenas na sessão "dados" */
+    overflow-x: hidden;
+    /* Habilita o scroll apenas na sessão "dados" */
+    height: calc(100vh - 220px);
+    /* Calcula a altura dinamicamente */
+}
+.positiondados{
+    width: 95%;
+    margin: 0 auto;
+ 
+}
+.dadosmobile{
+    overflow-x: hidden;
+    /* Habilita o scroll apenas na sessão "dados" */
+}
+.bi-funnel-fill {
+font-size: 24px; /* Defina o tamanho desejado em pixels */
+margin-right: 20px;
+color: #2A7AB2;
+}
+
+.bi-funnel-fill:hover {
+
+color: #175f92;
+}
+

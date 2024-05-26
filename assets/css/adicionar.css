@@ -1,0 +1,64 @@
+body {
+    /* Desabilita o scroll do corpo */
+    background-color: #ECF0F1;
+}
+
+.cabecalho {
+    height: auto;
+    /* Ajusta a altura automaticamente conforme o conteúdo */
+}
+
+.dados {
+    overflow-y: scroll;
+    /* Habilita o scroll apenas na sessão "dados" */
+    overflow-x: hidden;
+    /* Habilita o scroll apenas na sessão "dados" */
+    height: calc(100vh - 220px);
+    /* Calcula a altura dinamicamente */
+}
+
+/* Ocultar a barra de rolagem */
+::-webkit-scrollbar {
+    display: none;
+    /* Para navegadores baseados em WebKit, como Chrome/Safari */
+}
+
+/* O mesmo para navegadores Firefox */
+/* Nota: Algumas versões do Firefox podem exigir prefixos de fornecedor adicionais */
+* {
+    scrollbar-width: none;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    /* Cor de fundo personalizada */
+    color: #343a40;
+    /* Cor do texto personalizada */
+}
+
+/* Oculta apenas os campos com o nome "categoria" */
+.form-group[data-nome="categoria"] {
+    display: none;
+}
+
+/* Estilo para linhas alternadas */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+    /* Cor suave para linhas ímpares */
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #ffffff;
+    /* Cor padrão para linhas pares */
+}
+
+.tabela-altura-fixada {
+    height: 600px;
+    overflow-y: auto;
+    /* Adiciona scroll vertical caso a tabela exceda a altura fixa */
+}
+.positiondados{
+    width: 98%;
+    margin: 0 auto;
+ 
+}
